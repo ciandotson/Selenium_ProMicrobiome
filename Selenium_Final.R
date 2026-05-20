@@ -1,4 +1,4 @@
-setwd("~/sel_test2")
+setwd("~/Selenium_ProMicrobiome/")
 
 #### FastQC on the reads ####
 system('mkdir QC')
@@ -397,10 +397,12 @@ rownames(sel_nmds.pvca) <- rownames(sel_nmds.vca); colnames(sel_nmds.pvca) <- 'V
 sel_nmds.pvca
 
 # Perform PermANOVA using all samples #
-sel.adon <- adonis2(sel.wuni~Plants*Comps*Treats, sel.met, permutations = 9999)
-sel.adon_by <- adonis2(sel.wuni~Plants*Comps*Treats, sel.met, permutations = 9999, by = 'terms')
+sel.adon <- adonis2(sel.wuni~Comps*Plants*Treats, sel.met, permutations = 9999)
+sel.adon_by <- adonis2(sel.wuni~Comps*Plants*Treats, sel.met, permutations = 9999, by = 'terms')
+sel.adon_marg <- adonis2(sel.wuni~Comps + Treats + Plants, sel.met, permutations = 9999, by = 'margin') 
 sel.adon
 sel.adon_by
+sel.adon_marg
 
 # Perform PermDISP using all samples # 
 sel.bdis <- betadisper(sel.wuni, group = sel.met$Tres)
@@ -878,7 +880,13 @@ adon.pval <- cbind(sel.adon$`Pr(>F)`[1],
                    lent_root_nl.adon$`Pr(>F)`[1],
                    lent_root_nh.adon$`Pr(>F)`[1],
                    lent_root_nn.adon$`Pr(>F)`[1],
-                   soil.adon$`Pr(>F)`[1])
+                   soil.adon$`Pr(>F)`[1],
+                   sel_o.adon$`Pr(>F)`[1],
+                   sel_o_rhiz.adon$`Pr(>F)`[1],
+                   sel_o_root.adon$`Pr(>F)`[1],
+                   sel_100.adon$`Pr(>F)`[1],
+                   sel_100_rhiz.adon$`Pr(>F)`[1],
+                   sel_100_root.adon$`Pr(>F)`[1])
 
 # Perform test corrections #
 colnames(adon.pval) <- seq(ncol(adon.pval))
